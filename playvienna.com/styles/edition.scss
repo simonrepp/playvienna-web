@@ -1,0 +1,31 @@
+@import './media-queries';
+
+.edition__checkpointHint {
+  font-style: italic;
+
+  &:before,
+  &:after {
+    content: '"';
+  }
+
+  &:empty {
+    display: none;
+  }
+}
+
+.edition__checkpointTitle {
+  font-family: 'Oswald';
+  text-transform: uppercase;
+}
+
+.edition__map {
+  height: 480px;
+
+  @include below-640 {
+    height: 200px;
+  }
+
+  @include below-480 {
+    height: 180px;
+  }
+}

@@ -1,0 +1,94 @@
+@import './colors';
+@import './media-queries';
+
+.upcoming__container {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  right: 700px;
+  bottom: 500px;
+}
+
+.upcoming__bubbles {
+  position: relative;
+}
+
+.upcoming__bubble {
+  $bubble-large: 300px;
+
+  align-items: center;
+  border-radius: $bubble-large;
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.3em;
+  height: $bubble-large;
+  justify-content: center;
+  position: absolute;
+  width: $bubble-large;
+
+  @include below-640 {
+    $bubble-medium: 250px;
+
+    border-radius: $bubble-medium;
+    font-size: 1.15em;
+    height: $bubble-medium;
+    width: $bubble-medium;
+  }
+
+  @include below-480 {
+    $bubble-small: 200px;
+
+    border-radius: $bubble-small;
+    font-size: 1em;
+    height: $bubble-small;
+    width: $bubble-small;
+  }
+}
+
+.upcoming__bubbleThisWeek {
+  background-color: rgba($color-primary, 0.8);
+  transform: rotate(-8.5deg);
+  z-index: 3;
+}
+
+.upcoming__bubbleNextWeek {
+  background-color: rgba($color-secondary, 0.8);
+  left: 90px;
+  top: -190px;
+  transform: rotate(-2.5deg);
+  z-index: 2;
+}
+
+.upcoming__bubbleSoon {
+  background-color: rgba($black, 0.8);
+  left: 280px;
+  transform: rotate(3.5deg);
+  z-index: 1;
+}
+
+.upcoming__heading {
+  cursor: default;
+  font-family: 'Oswald';
+  font-size: 1.5em;
+}
+
+.upcoming__links {
+  text-align: center;
+  width: 80%;
+}
+
+.upcoming__link {
+  color: $white;
+  text-decoration: none;
+
+  @include from-640 {
+    margin: 2.5px;
+  }
+
+  &:hover {
+    background-color: $white;
+    color: $black;
+  }
+}

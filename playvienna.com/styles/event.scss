@@ -1,0 +1,24 @@
+@import './media-queries';
+
+.event__hideButton {
+  align-items: center;
+  cursor: pointer;
+  background-color: rgba(255,255,255,1);
+  display: flex;
+  height: 60px;
+  justify-content: center;
+  width: 60px;
+
+  @include show-below-960;
+}
+
+.event__map {
+  height: 200px;
+}
+
+.event__title {
+  display: inline-block;
+  font-family: 'Oswald';
+  font-size: 0.9em;
+  margin-top: 16px;
+}

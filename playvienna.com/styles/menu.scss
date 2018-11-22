@@ -1,0 +1,105 @@
+@import './colors';
+@import './media-queries';
+
+.menu__container {
+  position: absolute;
+  top: 60px;
+  width: 100%;
+  z-index: 1;
+
+  &.open {
+    .menu__optionsContainer {
+      display: block;
+    }
+
+    .menu__placeholder {
+      background: linear-gradient(to right, #dcdcdc, rgba(#dcdcdc, 0.8));
+
+      &:hover {
+        background: linear-gradient(to right, #ebebeb, rgba(#ebebeb, 0.8));
+      }
+    }
+  }
+}
+
+.menu__bar {
+  background-color: rgba(#dcdcdc, 0.8);
+  border-bottom: 1px solid rgba(#000, 0.05);
+  box-shadow: 0 2px 10px 0 rgba(#000, 0.2);
+}
+
+.menu__select {
+  width: 100%;
+}
+
+.menu__selectAdaptive {
+  @include show-below-480;
+}
+
+.menu__optionsContainer {
+  display: none;
+  height: calc(100vh - 160px);
+}
+
+.menu__options {
+  height: 100%;
+  overflow-y: auto;
+  z-index: 1;
+}
+
+.menu__option {
+  background: linear-gradient(to right, #dcdcdc, rgba(#dcdcdc, 0.8));
+  border-bottom: 1px dashed #ccc;
+  color: #000;
+  display: block;
+  outline: none;
+  padding: 6px 12px;
+  text-decoration: none;
+
+  &:hover {
+    background: linear-gradient(to right, #ebebeb, rgba(#ebebeb, 0.8));
+  }
+
+  @include below-640 {
+    align-items: center;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+}
+
+.menu__placeholder {
+  color: $black-muted;
+  cursor: pointer;
+  display: block;
+  padding: 12px;
+
+  &:hover {
+    color: $black;
+  }
+}
+
+.menu__tabs {
+  @include show-from-480;
+}
+
+.menu__tab {
+  color: $black-muted;
+  display: inline-block;
+  outline: none;
+  padding: 12px;
+  text-decoration: none;
+  user-select: none;
+
+  &:last-child {
+    margin-right: 0;
+  }
+
+  &:hover {
+    color: $black;
+  }
+
+  &.active {
+    background: linear-gradient(to bottom, #ececec, #eee);
+  }
+}

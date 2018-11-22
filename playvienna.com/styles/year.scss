@@ -1,0 +1,144 @@
+@import './colors';
+@import './media-queries';
+
+.year__date {
+  text-align: right;
+}
+
+.year__eventPanel {
+  background-color: $white;
+  box-sizing: border-box;
+  height: calc(100vh - 160px - 100px);
+  overflow-y: scroll;
+
+  @include below-960 {
+    width: 100vw;
+  }
+}
+
+.year__link {
+  border-bottom: 1px dashed $white-muted;
+  color: $black-muted;
+  display: block;
+  outline: none;
+  padding: 6px 0;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #eee;
+  }
+}
+
+.year__linkActive {
+  background-color: #f8f8f8;
+}
+
+.year__listHeader {
+  background-color: $white;
+  border-bottom: 1px dashed $white-muted;
+  color: #bbb;
+  margin-top: 16px;
+  padding: 6px 0;
+}
+
+.year__listPanel {
+  height: calc(100vh - 160px - 100px);
+  overflow-y: scroll;
+
+  @include below-960 {
+    width: 100vw;
+  }
+}
+
+.year__panels {
+  @include below-960 {
+    left: 0;
+    position: relative;
+    transition: left .2s;
+    width: 200vw;
+
+    &.displaced {
+      left: -100vw;
+    }
+  }
+}
+
+.year__row:last-child .year__link {
+  border-bottom: 1px dashed $white;
+}
+
+.year__rowAlignment {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+}
+
+.year__split {
+  column-count: 2;
+
+  @include below-960 {
+    column-gap: 0;
+  }
+
+  @include from-960 {
+    column-gap: 30px;
+  }
+}
+
+.year__subtitle {
+  font-size: 0.9em;
+  margin: -2px 0 2px 0;
+}
+
+.year__type {
+  border-radius: 2.5px;
+  color: $black-muted;
+  display: inline-block;
+  font-family: 'Oswald';
+  font-size: 0.75em;
+  margin-left: 5px;
+  padding: 0 4px 1px 2.5px;
+  text-transform: lowercase;
+}
+
+.year__type-fair-booth {
+  background-color: $color-fair-booth;
+}
+
+.year__type-festival {
+  background-color: $color-festival;
+}
+
+.year__type-lecture {
+  background-color: $color-lecture;
+}
+
+.year__type-meet {
+  background-color: $color-meet;
+}
+
+.year__type-panel-discussion {
+  background-color: $color-panel-discussion;
+}
+
+.year__type-play {
+  background-color: $color-play;
+}
+
+.year__type-playtest {
+  background-color: $color-playtest;
+}
+
+.year__type-talk {
+  background-color: $color-talk;
+}
+
+.year__type-workshop {
+  background-color: $color-workshop;
+}
+
+
+.year__title {
+  font-family: 'Oswald';
+  font-size: 0.9em;
+}

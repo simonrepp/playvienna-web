@@ -1,0 +1,64 @@
+@import './colors.scss';
+
+.theme__header {
+  font-family: 'Oswald';
+  font-size: 1.2em;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+.theme__link {
+  background-color: #eee;
+  color: $color-primary;
+  padding: 0 2px;
+  text-decoration: none;
+
+  &:hover {
+    background-color: $color-primary;
+    color: $white;
+  }
+}
+
+.theme__list {
+  list-style: none;
+  margin-top: 0;
+  padding: 0;
+
+  li {
+    margin-top: 1px;
+  }
+}
+
+.theme__noMargin {
+  margin: 0;
+}
+
+.theme__margin {
+  margin: 16px 0;
+}
+
+.theme__margin2x {
+  margin: 32px 0;
+}
+
+.theme__markdown {
+  h1 { @extend .theme__header; }
+  a { @extend .theme__link; }
+  ul { @extend .theme__list; }
+  strong { @extend .theme__strong; }
+}
+
+.theme__strong {
+  font-family: 'Oswald';
+  font-size: 0.9em;
+  font-weight: 300;
+}
+
+.theme__text {
+  text-align: justify;
+  max-width: 600px;
+}
+
+.theme__title {
+  font-family: 'Oswald';
+}

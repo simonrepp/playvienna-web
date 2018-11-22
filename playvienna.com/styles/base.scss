@@ -1,0 +1,19 @@
+@import './media-queries';
+
+html,
+button,
+input {
+  font-family: 'Open Sans Condensed', sans-serif;
+  font-weight: 300;
+  font-size: 18px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}

@@ -1,0 +1,85 @@
+@import './colors.scss';
+
+$padding: 12px;
+$restraint: 1280px;
+
+.layout__block {
+  margin: 16px 0;
+}
+
+.layout__block2x {
+  margin: 32px 0;
+}
+
+.layout__canvas {
+  background-color: $white;
+  color: $black-muted;
+  height: 100vh;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.layout__xPadding {
+  padding: 0 $padding;
+}
+
+.layout__xPaddingBelow960 {
+  @media (max-width: 960px - 1px) {
+    padding: 0 $padding;
+  }
+}
+
+.layout__xPaddingBelowRestraint {
+  @media (max-width: $restraint + $padding * 2 - 1px) {
+    padding: 0 $padding;
+  }
+}
+
+.layout__xPaddingFrom960 {
+  @media (min-width: 960px) {
+    padding: 0 $padding;
+  }
+}
+
+.layout__xPaddingFromRestraint {
+  @media (min-width: $restraint + $padding * 2) {
+    padding: 0 $padding;
+  }
+}
+
+.layout__xRestraint {
+  margin: 0 auto;
+  max-width: $restraint;
+}
+
+.layout__xRestraintFromRestraint {
+  @media (min-width: $restraint + $padding * 2) {
+    margin: 0 auto;
+    max-width: $restraint;
+  }
+}
+
+.layout__marginY {
+  margin-top: 160px;
+  margin-bottom: 100px;
+}
+
+.layout__marginReducedY {
+  margin-top: 110px;
+  margin-bottom: 100px;
+}
+
+.layout__wrapper {
+  box-shadow: -2px 0 10px 0 rgba(0,0,0,.2);
+  left: 0;
+  height: 100vh;
+  position: relative;
+  transition: left 0.2s;
+  z-index: 1;
+
+  @include below-640 {
+    &.displaced {
+      left: 200px;
+    }
+  }
+}

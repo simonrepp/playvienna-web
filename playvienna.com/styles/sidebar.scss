@@ -1,0 +1,55 @@
+.sidebar__container {
+  align-items: left;
+  background-color: #eee;
+  display: flex;
+  flex: 0 0 auto;
+  flex-flow: column;
+  height: 100%;
+  position: fixed;
+  top: 0;
+  z-index: 0;
+  width: 100%;
+}
+
+.sidebar__link {
+  color: #000;
+  display: block;
+  padding: 12px;
+  outline: none;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #f6f6f6;
+  }
+}
+
+.sidebar__row {
+  border-bottom: 1px dashed #d0d0d0;
+  display: block;
+  width: 100%;
+}
+
+.sidebar__search {
+  color: #666;
+  padding: 11px 6px;
+
+  &:hover {
+    background-color: #f6f6f6;
+  }
+}
+
+.sidebar__searchbox {
+  background: transparent;
+  border: none;
+  color: #000;
+  outline: none;
+
+  &:focus {
+    color: #000;
+  }
+
+  &::placeholder {
+    color: #666;
+    opacity: 1;
+  }
+}

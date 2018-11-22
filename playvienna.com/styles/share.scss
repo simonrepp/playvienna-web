@@ -1,0 +1,47 @@
+@import './colors';
+
+.share {
+  margin-top: 45px;
+}
+
+.share__link {
+  cursor: pointer;
+
+  .icon-share::before {
+    margin: 0;
+  }
+}
+
+.share__notification {
+  color: $color-primary;
+  display: none;
+  padding-left: 6px;
+}
+
+.share__container.confirmed {
+  .share__link,
+  .share__link:hover {
+    background-color: $color-secondary;
+    color: $white;
+  }
+
+  .share__notification {
+    color: $color-secondary;
+  }
+
+  .share__link + .share__notification {
+    display: inline;
+  }
+}
+
+.share__link:hover + .share__notification {
+  display: inline;
+}
+
+.share__textarea {
+  cursor: default;
+  height: 0;
+  width: 0;
+  opacity: 0;
+  user-select: none;
+}
