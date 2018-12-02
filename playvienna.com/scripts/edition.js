@@ -141,7 +141,7 @@ class JourneyMapEngine {
       origin: new google.maps.Point(0, 0),
       scaledSize: new google.maps.Size(32, 32),
       size: new google.maps.Size(32, 32),
-      url: '/markers/checkpoint.png'
+      url: '/images/checkpoint_marker.png'
     };
 
     this.map = new google.maps.Map(this.element, mapOptions);

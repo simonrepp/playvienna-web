@@ -18,7 +18,7 @@ const SECTION_URLS = {
 const logo = context => `
 <a class="header__link" href="${context.indexUrl}">
   <img class="header__logo"
-       src="${context.section === 'index' ? '/logo-secondary.svg' : '/logo.svg'}" />
+       src="${context.section === 'index' ? '/images/logo_secondary.svg' : '/images/logo.svg'}" />
 </a>
 `;
 

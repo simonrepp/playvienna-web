@@ -44,7 +44,7 @@ class EventMapEngine {
       origin: new google.maps.Point(0, 0),
       scaledSize: new google.maps.Size(64, 64),
       size: new google.maps.Size(128, 128),
-      url: '/markers/event.png'
+      url: '/images/event_marker.png'
     };
 
     this.marker = new google.maps.Marker({

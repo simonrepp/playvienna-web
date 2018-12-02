@@ -2,6 +2,7 @@ const Turbolinks = require('turbolinks');
 
 const edition = require('./edition.js');
 const _event = require('./event.js');
+const media = require('./media.js');
 const menu = require('./menu.js');
 const scroll = require('./scroll.js');
 const search = require('./search.js');
@@ -15,6 +16,7 @@ document.addEventListener('click', event => {
   scroll.handleClick(event);
 
   if(menu.handleClick(event)) return;
+  if(media.handleClick(event)) return;
   if(_event.handleClick(event)) return;
   if(sidebar.handleClick(event)) return;
   if(share.handleClick(event)) return;

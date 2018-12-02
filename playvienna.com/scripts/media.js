@@ -1,5 +1,6 @@
 const view = element => {
   const label = element.dataset.label;
+  const type = element.dataset.type;
   const url = element.dataset.url;
 
   const viewer = document.createElement('div');
@@ -15,7 +16,7 @@ const view = element => {
 </style>
 
 <div class="fittedWidth">
-  <img src="${url}">
+  ${type === 'image' ? `<img src="${url}">` : `<video controls src="${url}"></video>`}
 </div>
 
 <!--Navigation availableWidth={availableWidth}

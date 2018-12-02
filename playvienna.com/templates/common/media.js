@@ -12,11 +12,12 @@ module.exports = (context, media, mode = 'wide') => media.length > 0 ? `
     ${media.map((source, index) => `
       <a class="media__thumbnailLink"
          ${source.label ? `data-label="${source.label}"` : ''}
+         data-type="${source.type}"
          data-url="${source.file.url}"
          href="${source.file.url}">
         <img alt="${source.label ? source.label : source.file.name}"
              class="media__thumbnailImage"
-             src="${source.file.url}"
+             src="${source.type === 'image' ? source.file.url : '/images/video.svg'}"
              ${source.label ? `title="${source.label}"` : ''}>
       </a>
     `).join('')}

@@ -12,7 +12,7 @@ module.exports = (context, content, options = {}) => `
     <meta property="og:title" content="Journey Vienna" />
     <meta property="og:url" content="http://journeyvienna.at" />
     <meta property="og:description" content="A streetgame of massive scale in vienna!" />
-    <meta property="og:image" content="http://playvienna.com/images/social-graph-logo.png" />
+    <meta property="og:image" content="http://playvienna.com/images/social_graph_logo.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 

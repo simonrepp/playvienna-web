@@ -25,7 +25,7 @@ module.exports = (context, content, options = {}) => `
     <meta property="og:title" content="${options.title || DEFAULT_TITLE}" />
     <meta property="og:url" content="${context.baseUrl}" />
     <meta property="og:description" content="${translate(context, 'Meta: Description')}" />
-    <meta property="og:image" content="${context.baseUrl + '/social-graph-logo.png'}" />
+    <meta property="og:image" content="${context.baseUrl + '/images/social_graph_logo.png'}" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
 

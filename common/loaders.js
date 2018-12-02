@@ -1,4 +1,5 @@
 const markdownIt = require('markdown-it')({ html: true });
+const path = require('path');
 const striptags = require('striptags');
 
 const EVENT_TYPES = [
@@ -64,9 +65,24 @@ exports.media = data => {
     const label = match[2];
 
     if(!data.media.hasOwnProperty(file))
-      throw `Die Datei ${file} wurde nicht gefunden, eventuell ein Tippfehler im Pfad?`;
+      throw `Die Datei '${file}' wurde nicht gefunden, eventuell ein Tippfehler im Pfad?`;
 
-    return { file: data.media[file], label: label };
+    const extension = path.extname(file);
+
+    let type;
+    if(extension.match(/\.(jpg|jpeg|png)/i)) {
+      type = 'image';
+    } else if(extension.match(/\.(ogv|mkv|mov|mp4)/i)) {
+      type = 'video';
+    } else {
+      throw `Die Dateiendung '${extension}' wird für Medienangaben (noch) nicht unterstützt - eventuell Machbarkeit erfragen falls benötigt.`;
+    }
+
+    return {
+      file: data.media[file],
+      label: label,
+      type: type
+    };
   };
 };
 
