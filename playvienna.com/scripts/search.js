@@ -3,7 +3,13 @@ const Search = require('../lib/search.js');
 const translate = require('../lib/translate.js');
 
 const linkSearchString = link => link.label ? `${link.url} – ${link.label}` : link.url;
-const mediaSearchString = media => media.label ? `${media.file.name} – ${media.label}` : media.file.name;
+const mediaSearchString = media => {
+  if(media.type === 'image' || media.type === 'video') {
+    return media.label ? `${media.file.name} – ${media.label}` : media.file.name;
+  } else {
+    return media.label ? `${media.url} – ${media.label}` : media.url;
+  }
+};
 
 exports.handleSubmit = event => {
   const form = event.target;

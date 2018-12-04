@@ -61,28 +61,42 @@ exports.media = data => {
     if(!match)
       throw `Medienangaben sind nur in den folgenden zwei Formaten erlaubt: 'media/folder/example.jpg' oder 'media/folder/example.jpg (Titel)'`
 
-    const file = match[1];
+    const url = match[1];
     const label = match[2];
 
-    if(!data.media.hasOwnProperty(file))
-      throw `Die Datei '${file}' wurde nicht gefunden, eventuell ein Tippfehler im Pfad?`;
-
-    const extension = path.extname(file);
-
-    let type;
-    if(extension.match(/\.(jpg|jpeg|png)/i)) {
-      type = 'image';
-    } else if(extension.match(/\.(ogv|mkv|mov|mp4)/i)) {
-      type = 'video';
+    if(url.match(/^https:\/\/www\.youtube-nocookie\.com\/embed\/.+/)) {
+      return {
+        label: label,
+        type: 'youtube',
+        url: url
+      };
+    } else if(url.match(/^https:\/\/player\.vimeo\.com\/video\/.+/)) {
+      return {
+        label: label,
+        type: 'vimeo',
+        url: url
+      };
     } else {
-      throw `Die Dateiendung '${extension}' wird für Medienangaben (noch) nicht unterstützt - eventuell Machbarkeit erfragen falls benötigt.`;
-    }
+      if(!data.media.hasOwnProperty(url))
+        throw `Die Datei '${url}' wurde nicht gefunden, eventuell ein Tippfehler im Pfad?`;
 
-    return {
-      file: data.media[file],
-      label: label,
-      type: type
-    };
+      const extension = path.extname(url);
+
+      let type;
+      if(extension.match(/\.(jpg|jpeg|png)/i)) {
+        type = 'image';
+      } else if(extension.match(/\.(ogv|mkv|mov|mp4)/i)) {
+        type = 'video';
+      } else {
+        throw `Die Dateiendung '${extension}' wird für Medienangaben (noch) nicht unterstützt - eventuell Machbarkeit erfragen falls benötigt.`;
+      }
+
+      return {
+        file: data.media[url],
+        label: label,
+        type: type
+      };
+    }
   };
 };
 

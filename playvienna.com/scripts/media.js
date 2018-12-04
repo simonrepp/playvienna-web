@@ -7,30 +7,40 @@ const view = element => {
 
   viewer.classList.add('media__viewer');
 
+  let media;
+  if(type === 'image') {
+    media = `<img src="${url}">`;
+  } else if(type === 'video') {
+    media = `<video controls src="${url}"></video>`;
+  } else if(type === 'vimeo') {
+    media = `
+      <iframe allow="autoplay; encrypted-media"
+              allowfullscreen
+              frameborder="0"
+              onload="this.classList.add('loaded')"
+              src="${url}"></iframe>
+    `;
+  } else if(type === 'youtube') {
+    media = `
+      <iframe allowfullscreen
+              frameborder="0"
+              onload="this.classList.add('loaded')"
+              src="${url}"></iframe>
+    `;
+  }
+
   viewer.innerHTML = `
-<style>
-  /*.fittedWidth { width: calc(100vh * {aspectRatio}); }
-  @media (max-aspect-ratio: {Math.floor(aspectRatio*1000)}/1000) {
-    .fittedWidth { width: calc(100vw); }
-  }*/
-</style>
-
-<div class="fittedWidth">
-  ${type === 'image' ? `<img src="${url}">` : `<video controls src="${url}"></video>`}
-</div>
-
-<!--Navigation availableWidth={availableWidth}
-fittedHeight={fittedHeight}
-index={index}
-media={media} -->
-
-<div class="media__caption">
-  ${label ? label : ''}
-</div>
+${media}
+<div class="media__caption">${label ? label : ''}</div>
   `;
 
   document.body.appendChild(viewer);
 };
+
+// <Navigation availableWidth={availableWidth}
+//             fittedHeight={fittedHeight}
+//             index={index}
+//             media={media} >
 
 exports.handleClick = event => {
   const viewer = document.querySelector('.media__viewer');
