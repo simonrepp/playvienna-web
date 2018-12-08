@@ -4,9 +4,11 @@ const sourceJourney = require('./source/journey.js');
 const sourceMedia = require('./source/media.js');
 const sourcePlayvienna = require('./source/playvienna.js');
 
-module.exports = async () => {
+module.exports = async (contentFolder, buildFolder) => {
   const data = {
-    contentFolder: process.env.npm_config_playvienna_web_content,
+    asyncProcessing: [],
+    buildFolder,
+    contentFolder,
     de: {},
     en: {}
   };
@@ -15,7 +17,7 @@ module.exports = async () => {
     throw `Please run 'npm config set playvienna_web_content /your/absolute/path/to/content' in a terminal to configure where the playvienna.com content folder is located.`;
 
   await sourceMedia(data);
-  
+
   await sourceEvents(data);
   await sourceGames(data);
   await sourceJourney(data);

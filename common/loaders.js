@@ -1,5 +1,7 @@
+const fsExtra = require('fs-extra');
 const markdownIt = require('markdown-it')({ html: true });
 const path = require('path');
+const sharp = require('sharp');
 const striptags = require('striptags');
 
 const EVENT_TYPES = [
@@ -66,15 +68,15 @@ exports.media = data => {
 
     if(url.match(/^https:\/\/www\.youtube-nocookie\.com\/embed\/.+/)) {
       return {
-        label: label,
+        label,
         type: 'youtube',
-        url: url
+        url
       };
     } else if(url.match(/^https:\/\/player\.vimeo\.com\/video\/.+/)) {
       return {
-        label: label,
+        label,
         type: 'vimeo',
-        url: url
+        url
       };
     } else {
       if(!data.media.hasOwnProperty(url))
@@ -82,9 +84,26 @@ exports.media = data => {
 
       const extension = path.extname(url);
 
+      let compressed;
       let type;
       if(extension.match(/\.(jpg|jpeg|png)/i)) {
         type = 'image';
+
+        const imageData = data.media[url];
+
+        if(!imageData.compressed) {
+          const imagePath = path.join(data.contentFolder, imageData.url);
+          const compressedUrl = imageData.url.replace(/\.[^.]+$/, '.compressed.jpg');
+          const compressedPath = path.join(data.buildFolder, compressedUrl);
+
+          const operation = fsExtra.ensureDir(path.dirname(compressedPath))
+                                   .then(() => sharp(imagePath).resize({ width: 2560, withoutEnlargement: true })
+                                                               .toFile(compressedPath));
+
+          data.asyncProcessing.push(operation);
+
+          imageData.compressed = compressedUrl;
+        }
       } else if(extension.match(/\.(ogv|mkv|mov|mp4)/i)) {
         type = 'video';
       } else {
@@ -93,8 +112,8 @@ exports.media = data => {
 
       return {
         file: data.media[url],
-        label: label,
-        type: type
+        label,
+        type
       };
     }
   };

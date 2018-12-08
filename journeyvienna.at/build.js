@@ -18,11 +18,12 @@ const build = async () => {
   /___/                            /____/
 `);
 
-  const data = await source();
-
   const publicDir = path.join(__dirname, '../public');
-
   await fsExtra.emptyDir(publicDir);
+
+  // TODO: Source/process (!) only journey relevant data - same applies vice versa for playvienna
+  const data = await source(process.env.npm_config_playvienna_web_content, publicDir);
+
   await fsExtra.copy(path.join(__dirname, 'static/'), path.join(publicDir, '/'));
 
   for(let locale of ['de', 'en']) {
@@ -68,6 +69,8 @@ const build = async () => {
     await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), siteNotFound(context));
 
   }
+
+  await Promise.all(data.asyncProcessing);
 
   console.timeEnd('journeyvienna.at/build');
 };

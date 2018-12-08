@@ -13,11 +13,11 @@ module.exports = (context, media, mode = 'wide') => media.length > 0 ? `
       <a class="media__thumbnailLink"
          ${source.label ? `data-label="${source.label}"` : ''}
          data-type="${source.type}"
-         data-url="${source.type === 'vimeo' || source.type === 'youtube' ? source.url : source.file.url}"
+         data-url="${source.type === 'vimeo' || source.type === 'youtube' ? source.url : (source.type === 'image' ? source.file.compressed : source.file.url)}"
          href="${source.type === 'vimeo' || source.type === 'youtube' ? source.url : source.file.url}">
         <img alt="${source.type === 'image' || source.type === 'video' ? (source.label ? source.label : source.file.name) : 'Video'}"
              class="media__thumbnailImage"
-             src="${source.type === 'image' ? source.file.url : '/images/video.svg'}"
+             src="${source.type === 'image' ? source.file.compressed : '/images/video.svg'}"
              ${source.label ? `title="${source.label}"` : ''}>
       </a>
     `).join('')}

@@ -26,11 +26,12 @@ module.exports = async data => {
 
     const image = sharp(file);
 
-    await image.resize({ width: 2560, withoutEnlargement: true })
-               .grayscale()
-               .toColorspace('b-w')
-               .toFile(path.join(publicDir, background.url));
+    const operation = image.resize({ width: 2560, withoutEnlargement: true })
+                           .grayscale()
+                           .toColorspace('b-w')
+                           .toFile(path.join(publicDir, background.url));
 
+    data.asyncProcessing.push(operation);
     data.backgrounds[section] = background;
 
     // const meta = await image.metadata();
