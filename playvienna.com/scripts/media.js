@@ -45,7 +45,7 @@ ${media}
 exports.handleClick = event => {
   const viewer = document.querySelector('.media__viewer');
 
-  if(viewer && viewer.contains(event.target)) {
+  if(viewer && event.target === viewer) {
     document.body.removeChild(viewer);
     return true;
   }
