@@ -1,6 +1,6 @@
 const eno = require('enojs');
 const fastGlob = require('fast-glob');
-const fs = require('fs');
+const fsExtra = require('fs-extra');
 const path = require('path');
 
 const { download, link, markdown, media, strip } = require('../loaders.js');
@@ -9,13 +9,13 @@ module.exports = async data => {
   data.de.playvienna = [];
   data.en.playvienna = [];
 
-  const directory = path.join(data.contentFolder, 'playvienna/*.eno');
+  const directory = path.join(data.contentDir, 'playvienna/*.eno');
   const files = await fastGlob(directory);
 
   for(let file of files) {
     const page = eno.parse(
-      await fs.promises.readFile(file, 'utf-8'),
-      { locale: 'de', reporter: 'terminal', sourceLabel: file }
+      await fsExtra.readFile(file, 'utf-8'),
+      { reporter: 'terminal', sourceLabel: file }
     );
 
     const de = page.section('DE');

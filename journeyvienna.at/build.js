@@ -1,4 +1,3 @@
-const fs = require('fs');
 const fsExtra = require('fs-extra');
 const path = require('path');
 
@@ -7,24 +6,15 @@ const index = require('./templates/index.js');
 const siteNotFound = require('./templates/site-not-found.js');
 const source = require('../common/source.js');
 
-const build = async () => {
-  console.time('journeyvienna.at/build');
-  console.log(`
-         _                                         _                                      __
-        (_)___  __  ___________  ___  __  ___   __(_)__  ____  ____  ____ _        ____ _/ /_
-       / / __ \\/ / / / ___/ __ \\/ _ \\/ / / / | / / / _ \\/ __ \\/ __ \\/ __ \`/       / __ \`/ __/
-      / / /_/ / /_/ / /  / / / /  __/ /_/ /| |/ / /  __/ / / / / / / /_/ /  _    / /_/ / /_
-   __/ /\\____/\\__,_/_/  /_/ /_/\\___/\\__, / |___/_/\\___/_/ /_/_/ /_/\\__,_/  (_)   \\__,_/\\__/
-  /___/                            /____/
-`);
+module.exports = async context => {
+  const { buildDir, contentDir } = context;
 
-  const publicDir = path.join(__dirname, '../public');
-  await fsExtra.emptyDir(publicDir);
+  await fsExtra.emptyDir(buildDir);
 
   // TODO: Source/process (!) only journey relevant data - same applies vice versa for playvienna
-  const data = await source(process.env.npm_config_playvienna_web_content, publicDir);
+  const data = await source(contentDir, buildDir);
 
-  await fsExtra.copy(path.join(__dirname, 'static/'), path.join(publicDir, '/'));
+  await fsExtra.copy(path.join(__dirname, 'static/'), path.join(buildDir, '/'));
 
   for(let locale of ['de', 'en']) {
 
@@ -37,42 +27,38 @@ const build = async () => {
       website: data[locale].journey.website
     };
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), index(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), index(context));
 
     // game
 
     context.url = locale === 'de' ? '/de/spiel/' : '/game/';
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), elaboration(context, 'Game'));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), elaboration(context, 'Game'));
 
     // publicity
 
     context.url = locale === 'de' ? '/de/weitersagen/' : '/publicity/';
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), elaboration(context, 'Publicity'));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), elaboration(context, 'Publicity'));
 
     // volunteer
 
     context.url = locale === 'de' ? '/de/freiwillige/' : '/volunteer/';
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), elaboration(context, 'Volunteer'));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), elaboration(context, 'Volunteer'));
 
     // site not found
 
     context.url = locale === 'de' ? '/de/seite-nicht-gefunden/' : '/site-not-found/';
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), siteNotFound(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), siteNotFound(context));
 
   }
 
   await Promise.all(data.asyncProcessing);
-
-  console.timeEnd('journeyvienna.at/build');
 };
-
-build();

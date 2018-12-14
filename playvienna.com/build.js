@@ -1,4 +1,3 @@
-const fs = require('fs');
 const fsExtra = require('fs-extra');
 const path = require('path');
 
@@ -16,23 +15,14 @@ const siteNotFound = require('./templates/site-not-found.js');
 const source = require('../common/source.js');
 const yearPage = require('./templates/events/year.js');
 
-const build = async () => {
-  console.log(`
-           __                  _
-    ____  / /___ ___  ___   __(_)__  ____  ____  ____ _        _________  ____ ___
-   / __ \\/ / __ \`/ / / / | / / / _ \\/ __ \\/ __ \\/ __ \`/       / ___/ __ \\/ __ \`__ \\
-  / /_/ / / /_/ / /_/ /| |/ / /  __/ / / / / / / /_/ /  _    / /__/ /_/ / / / / / /
- / .___/_/\\__,_/\\__, / |___/_/\\___/_/ /_/_/ /_/\\__,_/  (_)   \\___/\\____/_/ /_/ /_/
-/_/            /____/
-`);
+module.exports = async context => {
+  const { buildDir, contentDir } = context;
 
-  console.time('playvienna.com/build');
-  const publicDir = path.join(__dirname, '../public');
-  await fsExtra.emptyDir(publicDir);
+  await fsExtra.emptyDir(buildDir);
 
-  const data = await source(process.env.npm_config_playvienna_web_content, publicDir);
+  const data = await source(contentDir, buildDir);
 
-  await fsExtra.copy(path.join(__dirname, 'static/'), path.join(publicDir, '/'));
+  await fsExtra.copy(path.join(__dirname, 'static/'), path.join(buildDir, '/'));
 
   await renderBackgrounds(data);
 
@@ -55,8 +45,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/' : '/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), index(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), index(context));
 
     // site not found
 
@@ -66,8 +56,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/seite-nicht-gefunden/' : '/site-not-found/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), siteNotFound(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), siteNotFound(context));
 
     // search
 
@@ -77,8 +67,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/suche/' : '/search/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), search(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), search(context));
 
     // playvienna
 
@@ -88,8 +78,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/playvienna/' : '/playvienna/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), playvienna(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), playvienna(context));
 
     for(let page of context.data.playvienna) {
       context = Object.assign({}, localeContext, {
@@ -99,8 +89,8 @@ const build = async () => {
         url: page.url
       });
 
-      await fsExtra.ensureDir(path.join(publicDir, context.url));
-      await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), playviennaPage(context));
+      await fsExtra.ensureDir(path.join(buildDir, context.url));
+      await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), playviennaPage(context));
     }
 
     // games
@@ -111,8 +101,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/spiele/' : '/games/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), games(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), games(context));
 
     for(let game of context.data.games) {
       context = Object.assign({}, localeContext, {
@@ -122,8 +112,8 @@ const build = async () => {
         url: game.url
       });
 
-      await fsExtra.ensureDir(path.join(publicDir, context.url));
-      await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), gamePage(context));
+      await fsExtra.ensureDir(path.join(buildDir, context.url));
+      await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), gamePage(context));
     }
 
     // events
@@ -134,8 +124,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/veranstaltungen/' : '/events/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), events(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), events(context));
 
     for(let year of context.data.years) {
       context = Object.assign({}, localeContext, {
@@ -145,8 +135,8 @@ const build = async () => {
         year: year
       });
 
-      await fsExtra.ensureDir(path.join(publicDir, context.url));
-      await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), yearPage(context));
+      await fsExtra.ensureDir(path.join(buildDir, context.url));
+      await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), yearPage(context));
 
       for(let event of year.events) {
         context = Object.assign({}, localeContext, {
@@ -157,8 +147,8 @@ const build = async () => {
           year: year
         });
 
-        await fsExtra.ensureDir(path.join(publicDir, context.url));
-        await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), yearPage(context));
+        await fsExtra.ensureDir(path.join(buildDir, context.url));
+        await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), yearPage(context));
       }
     }
 
@@ -169,8 +159,8 @@ const build = async () => {
       url: locale === 'de' ? '/de/journey/' : '/journey/'
     });
 
-    await fsExtra.ensureDir(path.join(publicDir, context.url));
-    await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), journey(context));
+    await fsExtra.ensureDir(path.join(buildDir, context.url));
+    await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), journey(context));
 
     for(let edition of context.data.journey.editions) {
       context = Object.assign({}, localeContext, {
@@ -180,14 +170,10 @@ const build = async () => {
         url: edition.url
       });
 
-      await fsExtra.ensureDir(path.join(publicDir, context.url));
-      await fs.promises.writeFile(path.join(publicDir, context.url, 'index.html'), editionPage(context));
+      await fsExtra.ensureDir(path.join(buildDir, context.url));
+      await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), editionPage(context));
     }
   }
 
   await Promise.all(data.asyncProcessing);
-
-  console.timeEnd('playvienna.com/build');
 };
-
-build();

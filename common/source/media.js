@@ -1,5 +1,4 @@
 const fastGlob = require('fast-glob');
-const fs = require('fs');
 const fsExtra = require('fs-extra');
 const path = require('path');
 
@@ -7,16 +6,14 @@ const KB = 1024;
 const MB = KB * KB;
 
 module.exports = async data => {
-  const publicDir = path.join(__dirname, '../../public');
-
   data.media = {};
 
-  const directory = path.join(data.contentFolder, 'media/**/*');
+  const directory = path.join(data.contentDir, 'media/**/*');
   const files = await fastGlob(directory);
 
   for(let file of files) {
-    const relativePath = path.relative(data.contentFolder, file);
-    const stats = await fs.promises.stat(file);
+    const relativePath = path.relative(data.contentDir, file);
+    const stats = await fsExtra.stat(file);
 
     fileData = {
       name: path.basename(file),
@@ -24,7 +21,7 @@ module.exports = async data => {
       url: path.join('/', relativePath)
     };
 
-    await fsExtra.copy(file, path.join(publicDir, fileData.url));
+    await fsExtra.copy(file, path.join(data.buildDir, fileData.url));
 
     data.media[relativePath] = fileData;
   }

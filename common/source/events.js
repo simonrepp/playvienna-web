@@ -1,6 +1,6 @@
 const eno = require('enojs');
 const fastGlob = require('fast-glob');
-const fs = require('fs');
+const fsExtra = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
 
@@ -18,13 +18,13 @@ module.exports = async data => {
   data.de.upcoming = { precalculated: [] };
   data.en.upcoming = { precalculated: [] };
 
-  const directory = path.join(data.contentFolder, 'events/**/*.eno');
+  const directory = path.join(data.contentDir, 'events/**/*.eno');
   const files = await fastGlob(directory);
 
   for(let file of files) {
     const event = eno.parse(
-      await fs.promises.readFile(file, 'utf-8'),
-      { locale: 'de', reporter: 'terminal', sourceLabel: file }
+      await fsExtra.readFile(file, 'utf-8'),
+      { reporter: 'terminal', sourceLabel: file }
     );
 
     const de = event.section('DE');

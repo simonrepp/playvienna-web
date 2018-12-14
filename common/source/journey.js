@@ -1,7 +1,7 @@
 const eno = require('enojs');
 const { Fieldset, List } = require('enojs');
 const fastGlob = require('fast-glob');
-const fs = require('fs');
+const fsExtra = require('fs-extra');
 const path = require('path');
 
 const { download, link, markdown, media, strip } = require('../loaders.js');
@@ -10,7 +10,7 @@ module.exports = async data => {
   data.de.journey = { editions: [], website: {} };
   data.en.journey = { editions: [], website: {} };
 
-  const website = eno.parse(await fs.promises.readFile(path.join(data.contentFolder, 'journey/website.eno'), 'utf-8'), { locale: 'de', reporter: 'terminal' });
+  const website = eno.parse(await fsExtra.readFile(path.join(data.contentDir, 'journey/website.eno'), 'utf-8'), { locale: 'de', reporter: 'terminal' });
 
   for(let locale of [website.section('DE'), website.section('EN')]) {
     for(let block of locale.elements()) {
@@ -18,13 +18,13 @@ module.exports = async data => {
     }
   }
 
-  const directory = path.join(data.contentFolder, 'journey/editions/*.eno');
+  const directory = path.join(data.contentDir, 'journey/editions/*.eno');
   const files = await fastGlob(directory);
 
   for(let file of files) {
     const edition = eno.parse(
-      await fs.promises.readFile(file, 'utf-8'),
-      { locale: 'de', reporter: 'terminal', sourceLabel: file }
+      await fsExtra.readFile(file, 'utf-8'),
+      { reporter: 'terminal', sourceLabel: file }
     );
 
     const deUrl = `/de/journey/${edition.string('Permalink', { required: true })}/`;

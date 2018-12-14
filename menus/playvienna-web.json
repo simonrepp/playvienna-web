@@ -1,0 +1,42 @@
+{
+  "menu": [
+    {
+      "label": "play:vienna",
+      "submenu": [
+        {
+          "label": "journeyvienna.at",
+          "submenu": [
+            {
+              "label": "Preview on this computer",
+              "command": "playvienna-web:journeyvienna.at:preview"
+            },
+            {
+              "label": "Deploy to the server",
+              "command": "playvienna-web:journeyvienna.at:update"
+            }
+          ]
+        },
+        {
+          "label": "playvienna.com",
+          "submenu": [
+            {
+              "label": "Preview on this computer",
+              "command": "playvienna-web:playvienna.com:preview"
+            },
+            {
+              "label": "Deploy to the server",
+              "command": "playvienna-web:playvienna.com:update"
+            }
+          ]
+        },
+        {
+          "type": "separator"
+        },
+        {
+          "label": "Configure content directory",
+          "command": "playvienna-web:configure"
+        }
+      ]
+    }
+  ]
+}

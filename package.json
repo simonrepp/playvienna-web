@@ -1,39 +1,42 @@
 {
-  "author": "Simon Repp <simon@fdpl.io>",
-  "devDependencies": {
-    "moment": "^2.22.2",
+  "author": "Simon Repp <simon@fdpl.io> (https://simonrepp.com)",
+  "dependencies": {
+    "atom-package-deps": "^4.6.2",
+    "enojs": "^0.16.1",
+    "express": "^4.16.4",
+    "fast-glob": "^2.2.4",
+    "fs-extra": "^7.0.1",
+    "markdown-it": "^8.4.2",
+    "moment": "^2.23.0",
     "moment-range": "^4.0.1",
-    "node-sass": "^4.10.0",
+    "sharp": "^0.20.8",
+    "striptags": "^3.1.1"
+  },
+  "description": "Static site generators for journeyvienna.at and playvienna.com",
+  "devDependencies": {
+    "node-sass": "^4.11.0",
     "parcel-bundler": "^1.10.3",
     "turbolinks": "^5.2.0"
   },
+  "engines": {
+    "atom": "*"
+  },
+  "main": "./lib/main.js",
   "name": "playvienna-web",
-  "private": true,
+  "package-deps": [
+    "language-eno:0.3.3"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/simonrepp/playvienna-web.git"
+  },
   "scripts": {
-    "common-serve": "http-server public -c-1",
-    "journeyvienna-build": "node journeyvienna.at/build.js",
     "journeyvienna-compile": "npm run journeyvienna-scripts && npm run journeyvienna-styles",
-    "journeyvienna-dev": "npm run journeyvienna-compile && npm run journeyvienna-build && npm run common-serve",
-    "journeyvienna-release": "npm run journeyvienna-build && node deploy.js journeyvienna.at",
     "journeyvienna-scripts": "parcel build journeyvienna.at/scripts/main.js --experimental-scope-hoisting --no-cache --no-source-maps --out-dir journeyvienna.at/static --out-file scripts.js",
     "journeyvienna-styles": "node-sass --output-style compressed journeyvienna.at/styles/main.scss journeyvienna.at/static/styles.css",
-    "journeyvienna-watch": "nodemon --watch journeyvienna.at --ignore journeyvienna.at/static/scripts.js --ignore journeyvienna.at/static/styles.css --exec 'npm run journeyvienna-dev'",
-    "playvienna-build": "node playvienna.com/build.js",
     "playvienna-compile": "npm run playvienna-scripts && npm run playvienna-styles",
-    "playvienna-dev": "npm run playvienna-compile && npm run playvienna-build && npm run common-serve",
-    "playvienna-release": "npm run playvienna-build && node deploy.js playvienna.com",
     "playvienna-scripts": "parcel build playvienna.com/scripts/main.js --experimental-scope-hoisting --no-cache --no-source-maps --out-dir playvienna.com/static --out-file scripts.js",
-    "playvienna-styles": "node-sass --output-style compressed playvienna.com/styles/main.scss playvienna.com/static/styles.css",
-    "playvienna-watch": "nodemon --watch playvienna.com --ignore playvienna.com/static/scripts.js --ignore playvienna.com/static/styles.css --exec 'npm run playvienna-dev'"
+    "playvienna-styles": "node-sass --output-style compressed playvienna.com/styles/main.scss playvienna.com/static/styles.css"
   },
-  "dependencies": {
-    "enojs": "^0.16.1",
-    "fast-glob": "^2.2.4",
-    "fs-extra": "^7.0.1",
-    "http-server": "^0.11.1",
-    "markdown-it": "^8.4.2",
-    "nodemon": "^1.18.7",
-    "sharp": "^0.21.1",
-    "striptags": "^3.1.1"
-  }
+  "version": "0.0.0"
 }

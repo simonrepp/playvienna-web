@@ -5,8 +5,7 @@ const path = require('path');
 const sharp = require('sharp');
 
 module.exports = async data => {
-  const publicDir = path.join(__dirname, '../../public');
-  fsExtra.ensureDir(path.join(publicDir, 'backgrounds'));
+  fsExtra.ensureDir(path.join(data.buildDir, 'backgrounds'));
 
   data.backgrounds = {};
   data.de.backgrounds = data.backgrounds;
@@ -26,10 +25,11 @@ module.exports = async data => {
 
     const image = sharp(file);
 
-    const operation = image.resize({ width: 2560, withoutEnlargement: true })
+    const operation = image.resize(2560)
+                           .withoutEnlargement()
                            .grayscale()
                            .toColorspace('b-w')
-                           .toFile(path.join(publicDir, background.url));
+                           .toFile(path.join(data.buildDir, background.url));
 
     data.asyncProcessing.push(operation);
     data.backgrounds[section] = background;

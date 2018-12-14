@@ -92,12 +92,13 @@ exports.media = data => {
         const imageData = data.media[url];
 
         if(!imageData.compressed) {
-          const imagePath = path.join(data.contentFolder, imageData.url);
+          const imagePath = path.join(data.contentDir, imageData.url);
           const compressedUrl = imageData.url.replace(/\.[^.]+$/, '.compressed.jpg');
-          const compressedPath = path.join(data.buildFolder, compressedUrl);
+          const compressedPath = path.join(data.buildDir, compressedUrl);
 
           const operation = fsExtra.ensureDir(path.dirname(compressedPath))
-                                   .then(() => sharp(imagePath).resize({ width: 2560, withoutEnlargement: true })
+                                   .then(() => sharp(imagePath).resize(2560)
+                                                               .withoutEnlargement()
                                                                .toFile(compressedPath));
 
           data.asyncProcessing.push(operation);
