@@ -24,7 +24,7 @@ module.exports = async data => {
   for(let file of files) {
     const edition = eno.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { reporter: 'terminal', sourceLabel: file }
+      { sourceLabel: file }
     );
 
     const deUrl = `/de/journey/${edition.string('Permalink', { required: true })}/`;

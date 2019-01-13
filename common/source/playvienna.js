@@ -15,7 +15,7 @@ module.exports = async data => {
   for(let file of files) {
     const page = eno.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { reporter: 'terminal', sourceLabel: file }
+      { sourceLabel: file }
     );
 
     const de = page.section('DE');
