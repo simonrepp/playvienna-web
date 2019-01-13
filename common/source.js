@@ -15,7 +15,6 @@ module.exports = async (contentDir, buildDir) => {
 
   await sourceMedia(data);
 
-
   await sourceEvents(data);
   await sourceGames(data);
   await sourceJourney(data);

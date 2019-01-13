@@ -20,6 +20,7 @@ module.exports = async data => {
 
   const directory = path.join(data.contentDir, 'events/**/*.eno');
   const files = await fastGlob(directory);
+  const usedUrls = [];
 
   for(let file of files) {
     const event = eno.parse(
@@ -40,6 +41,15 @@ module.exports = async data => {
 
     const deUrl = `/de/${deDate.getFullYear()}/${de.string('Permalink', { required: true })}/`;
     const enUrl = `/${enDate.getFullYear()}/${en.string('Permalink', { required: true })}/`;
+
+    if(usedUrls.hasOwnProperty(deUrl))
+      throw de.element('Permalink').error(`The german version of the event '${usedUrls[deUrl]}' already uses the permalink '${de.string('Permalink')}' - permalinks must be unique inside each locale (de/en)!`);
+
+    if(usedUrls.hasOwnProperty(enUrl))
+      throw en.element('Permalink').error(`The english version of the event '${usedUrls[enUrl]}' already uses the permalink '${en.string('Permalink')}' - permalinks must be unique inside each locale (de/en)!`);
+
+    usedUrls[deUrl] = file;
+    usedUrls[enUrl] = file;
 
     for(let locale of [de, en]) {
       const eventData = {
