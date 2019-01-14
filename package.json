@@ -24,7 +24,7 @@
   "main": "./lib/main.js",
   "name": "playvienna-web",
   "package-deps": [
-    "language-eno:0.3.3"
+    "language-eno:0.4.1"
   ],
   "repository": {
     "type": "git",
