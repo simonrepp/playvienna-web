@@ -7,10 +7,10 @@ const striptags = require('striptags');
 const EVENT_TYPES = [
   'Fair Booth',
   'Festival',
+  'Game(s)',
   'Lecture',
   'Meet',
   'Panel Discussion',
-  'Play',
   'Playtest',
   'Talk',
   'Workshop'

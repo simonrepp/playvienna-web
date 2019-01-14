@@ -35,7 +35,7 @@ const eventRow = (context, event) => `
         </strong>
 
         ${event.types.map(type => `
-          <span class="year__type year__type-${type.replace(/ /g, '-').toLowerCase()}">
+          <span class="year__type year__type-${type.replace(/[ ()]/g, '-').toLowerCase()}">
             ${translate(context, type)}
           </span>
         `).join('')}
