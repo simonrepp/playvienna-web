@@ -26,7 +26,7 @@ module.exports = async context => {
 
   await renderBackgrounds(data);
 
-  for(let locale of ['de', 'en']) {
+  for(const locale of ['de', 'en']) {
     const localeContext = {
       baseUrl: 'http://playvienna.com',
       data: data[locale],
@@ -81,7 +81,7 @@ module.exports = async context => {
     await fsExtra.ensureDir(path.join(buildDir, context.url));
     await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), playvienna(context));
 
-    for(let page of context.data.playvienna) {
+    for(const page of context.data.playvienna) {
       context = Object.assign({}, localeContext, {
         page: page,
         section: 'playvienna',
@@ -104,7 +104,7 @@ module.exports = async context => {
     await fsExtra.ensureDir(path.join(buildDir, context.url));
     await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), games(context));
 
-    for(let game of context.data.games) {
+    for(const game of context.data.games) {
       context = Object.assign({}, localeContext, {
         game: game,
         section: 'games',
@@ -127,7 +127,7 @@ module.exports = async context => {
     await fsExtra.ensureDir(path.join(buildDir, context.url));
     await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), events(context));
 
-    for(let year of context.data.years) {
+    for(const year of context.data.years) {
       context = Object.assign({}, localeContext, {
         section: 'events',
         translateUrl: year.translateUrl,
@@ -138,7 +138,7 @@ module.exports = async context => {
       await fsExtra.ensureDir(path.join(buildDir, context.url));
       await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), yearPage(context));
 
-      for(let event of year.events) {
+      for(const event of year.events) {
         context = Object.assign({}, localeContext, {
           event: event,
           section: 'events',
@@ -162,7 +162,7 @@ module.exports = async context => {
     await fsExtra.ensureDir(path.join(buildDir, context.url));
     await fsExtra.writeFile(path.join(buildDir, context.url, 'index.html'), journey(context));
 
-    for(let edition of context.data.journey.editions) {
+    for(const edition of context.data.journey.editions) {
       context = Object.assign({}, localeContext, {
         edition: edition,
         section: 'journey',

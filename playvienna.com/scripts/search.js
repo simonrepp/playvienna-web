@@ -36,11 +36,11 @@ exports.handleLoad = () => {
 
   const query = decodeURI(location.search.split(context.locale === 'de' ? '?begriff=' : '?query=').pop());
 
-  for(let searchbox of document.querySelectorAll('.header__searchbox')) {
+  for(const searchbox of document.querySelectorAll('.header__searchbox')) {
     searchbox.value = query;
   }
 
-  for(let link of document.querySelectorAll('[data-translate-link]')) {
+  for(const link of document.querySelectorAll('[data-translate-link]')) {
     link.href = context.locale === 'de' ? `/search/?query=${query}` : `/de/suche/?begriff=${query}`;
   }
 
@@ -58,7 +58,7 @@ exports.handleLoad = () => {
       notification = translate(context, 'Notification: Calendar search instructions');
     }
 
-    for(let page of context.data.playvienna) {
+    for(const page of context.data.playvienna) {
       search.matchText(page.title, translate(context, 'Title'));
       search.matchText(page.textStripped, translate(context, 'Text'));
       search.matchList(page.downloads, mediaSearchString, translate(context, 'Download'));
@@ -74,7 +74,7 @@ exports.handleLoad = () => {
       }
     }
 
-    for(let game of context.data.games) {
+    for(const game of context.data.games) {
       search.matchYear(game.year, translate(context, 'Year'));
       search.matchText(game.title, translate(context, 'Title'));
       search.matchText(game.textStripped, translate(context, 'Text'));
@@ -92,7 +92,7 @@ exports.handleLoad = () => {
       }
     }
 
-    for(let event of context.data.events) {
+    for(const event of context.data.events) {
       if(event.end) {
         search.matchDateRange(event.date, event.end, translate(context, 'Date'));
       } else {
@@ -126,7 +126,7 @@ exports.handleLoad = () => {
       }
     }
 
-    for(let edition of context.data.journey.editions) {
+    for(const edition of context.data.journey.editions) {
       search.matchDate(edition.date, translate(context, 'Date'));
       search.matchText(edition.title, translate(context, 'Title'));
       // search.matchText(edition.textStripped, translate(context, 'Text')); // TODO: Unlock when the content is presentable enough
@@ -135,7 +135,7 @@ exports.handleLoad = () => {
       search.matchList(edition.links, linkSearchString, translate(context, 'Link'));
       search.matchList(edition.media, mediaSearchString, translate(context, 'Media file'));
 
-      for(let checkpoint of edition.route) {
+      for(const checkpoint of edition.route) {
         let locationLabel;
         if(checkpoint.special === 'start') {
           locationLabel = translate(context, 'Gathering point');

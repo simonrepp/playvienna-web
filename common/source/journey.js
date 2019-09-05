@@ -14,8 +14,8 @@ module.exports = async data => {
 
   const website = enolib.parse(await fsExtra.readFile(path.join(data.contentDir, 'journey/website.eno'), 'utf-8'));
 
-  for(let locale of [website.section('DE'), website.section('EN')]) {
-    for(let block of locale.fields()) {
+  for(const locale of [website.section('DE'), website.section('EN')]) {
+    for(const block of locale.fields()) {
       data[locale.stringKey().toLowerCase()].journey.website[block.stringKey()] = block.requiredMarkdownValue();
     }
   }
@@ -23,7 +23,7 @@ module.exports = async data => {
   const directory = path.join(data.contentDir, 'journey/editions/*.eno');
   const files = await fastGlob(directory);
 
-  for(let file of files) {
+  for(const file of files) {
     const edition = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
       { source: file }
@@ -32,7 +32,7 @@ module.exports = async data => {
     const deUrl = `/de/journey/${edition.field('Permalink').requiredStringValue()}/`;
     const enUrl = `/journey/${edition.field('Permalink').requiredStringValue()}/`;
 
-    for(let locale of ['de', 'en']) {
+    for(const locale of ['de', 'en']) {
       let checkpointNumber = 0;
 
       // TODO: (-ish): No possibilty for locale specific download/link/media/labels for journeys because of unique layout
@@ -106,7 +106,7 @@ module.exports = async data => {
     edition.assertAllTouched();
   }
 
-  for(let locale of ['de', 'en']) {
+  for(const locale of ['de', 'en']) {
     data[locale].journey.latest = data[locale].journey.editions.reduce((pick, candidate) =>
       candidate.date > pick.date ? candidate : pick
     );

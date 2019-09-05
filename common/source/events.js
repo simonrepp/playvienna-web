@@ -25,7 +25,7 @@ module.exports = async data => {
   const files = await fastGlob(directory);
   const usedUrls = [];
 
-  for(let file of files) {
+  for(const file of files) {
     const event = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
       { source: file }
@@ -54,7 +54,7 @@ module.exports = async data => {
     usedUrls[deUrl] = file;
     usedUrls[enUrl] = file;
 
-    for(let locale of [de, en]) {
+    for(const locale of [de, en]) {
       const eventData = {
         address: locale.field('Address').optionalStringValue(),
         city: locale.field('City').requiredStringValue(),

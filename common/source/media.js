@@ -11,7 +11,7 @@ module.exports = async data => {
   const directory = path.join(data.contentDir, 'media/**/*');
   const files = await fastGlob(directory);
 
-  for(let file of files) {
+  for(const file of files) {
     const relativePath = path.relative(data.contentDir, file);
     const stats = await fsExtra.stat(file);
 

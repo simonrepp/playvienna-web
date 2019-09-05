@@ -15,7 +15,7 @@ module.exports = async data => {
   const directory = path.join(data.contentDir, 'games/*.eno');
   const files = await fastGlob(directory);
 
-  for(let file of files) {
+  for(const file of files) {
     const game = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
       { source: file }
@@ -27,7 +27,7 @@ module.exports = async data => {
     const deUrl = `/de/spiele/${de.field('Permalink').requiredStringValue()}/`;
     const enUrl = `/games/${en.field('Permalink').requiredStringValue()}/`;
 
-    for(let locale of [de, en]) {
+    for(const locale of [de, en]) {
       data[locale === de ? 'de' : 'en'].games.push({
         credits: locale.field('Credits').requiredStringValue(),
         downloads: locale.list('Downloads').requiredValues(download(data)),

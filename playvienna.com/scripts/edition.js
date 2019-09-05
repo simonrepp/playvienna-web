@@ -165,7 +165,7 @@ class JourneyMapEngine {
   updateMarkers() {
     this.clearMarkers();
 
-    for(let checkpoint of this.context.edition.route) {
+    for(const checkpoint of this.context.edition.route) {
       let label;
 
       if(checkpoint.special === 'start') {
@@ -186,7 +186,7 @@ class JourneyMapEngine {
     const route = [];
     let alternativeRoute = null;
 
-    for(let checkpoint of this.context.edition.route) {
+    for(const checkpoint of this.context.edition.route) {
       if(checkpoint.special === 'alternativeA') {
         alternativeRoute = [];
         alternativeRoute.push(route[route.length - 1]);
@@ -211,7 +211,7 @@ class JourneyMapEngine {
   updateSafeZones() {
     this.clearSafeZones();
 
-    for(let checkpoint of this.context.edition.route) {
+    for(const checkpoint of this.context.edition.route) {
       this.addSafeZone(checkpoint.safezone);
     }
   }

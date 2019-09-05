@@ -52,7 +52,7 @@ exports.handleClick = event => {
 
   const links = document.querySelectorAll('.media__thumbnailLink');
 
-  for(let link of links) {
+  for(const link of links) {
     if(link.contains(event.target)) {
       event.preventDefault();
 

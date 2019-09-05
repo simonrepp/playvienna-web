@@ -16,7 +16,7 @@ module.exports = async context => {
 
   await fsExtra.copy(path.join(__dirname, 'static/'), path.join(buildDir, '/'));
 
-  for(let locale of ['de', 'en']) {
+  for(const locale of ['de', 'en']) {
 
     // index
 

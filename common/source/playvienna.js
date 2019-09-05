@@ -15,7 +15,7 @@ module.exports = async data => {
   const directory = path.join(data.contentDir, 'playvienna/*.eno');
   const files = await fastGlob(directory);
 
-  for(let file of files) {
+  for(const file of files) {
     const page = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
       { source: file }

@@ -39,7 +39,7 @@ export const calculateUpcoming = context => {
     moment().add(1, 'weeks').endOf('isoWeek')
   );
 
-  for(let event of context.data.upcoming.precalculated) {
+  for(const event of context.data.upcoming.precalculated) {
     if(event.end) {
       const begin = moment(event.date);
       const end = moment(event.end);

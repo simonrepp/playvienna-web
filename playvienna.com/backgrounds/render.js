@@ -13,7 +13,7 @@ module.exports = async data => {
 
   const files = await fastGlob(path.join(__dirname, '*'));
 
-  for(let file of files) {
+  for(const file of files) {
     if(path.extname(file) === '.js')
       continue;
 
