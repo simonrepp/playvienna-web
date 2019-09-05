@@ -17,7 +17,7 @@ const EVENT_TYPES = [
 ];
 
 exports.download = data => {
-  return ({ value }) => {
+  return value => {
     const match = value.match(/^([^ ]+)(?: +\( *(.+)? *\))?$/);
 
     if(!match)
@@ -33,7 +33,7 @@ exports.download = data => {
   };
 };
 
-exports.eventType = ({ value }) => {
+exports.eventType = value => {
   return value.split(',').map(type => {
     const trimmed = type.trim();
 
@@ -44,7 +44,7 @@ exports.eventType = ({ value }) => {
   });
 };
 
-exports.link = ({ value }) => {
+exports.link = value => {
   const match = value.match(/^(https?:\/\/[^ ]+)(?: +\( *(.+)? *\))?$/);
 
   if(!match)
@@ -54,10 +54,10 @@ exports.link = ({ value }) => {
 
 };
 
-exports.markdown = ({ value }) => markdownIt.render(value);
+exports.markdown = value => markdownIt.render(value);
 
 exports.media = data => {
-  return ({ value }) => {
+  return value => {
     const match = value.match(/^([^ ]+)(?: +\( *(.+)? *\))?$/);
 
     if(!match)
@@ -120,4 +120,4 @@ exports.media = data => {
   };
 };
 
-exports.strip = ({ value }) => striptags(markdownIt.render(value));
+exports.stripped = value => striptags(markdownIt.render(value));

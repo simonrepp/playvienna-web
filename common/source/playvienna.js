@@ -1,9 +1,12 @@
-const eno = require('enojs');
+const enolib = require('enolib');
 const fastGlob = require('fast-glob');
 const fsExtra = require('fs-extra');
 const path = require('path');
+const { integer } = require('enotype');
 
-const { download, link, markdown, media, strip } = require('../loaders.js');
+const { download, link, markdown, media, stripped } = require('../loaders.js');
+
+enolib.register({ integer, link, markdown, stripped });
 
 module.exports = async data => {
   data.de.playvienna = [];
@@ -13,26 +16,26 @@ module.exports = async data => {
   const files = await fastGlob(directory);
 
   for(let file of files) {
-    const page = eno.parse(
+    const page = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { sourceLabel: file }
+      { source: file }
     );
 
     const de = page.section('DE');
     const en = page.section('EN');
 
-    const deUrl = `/de/${de.string('Permalink', { required: true })}/`;
-    const enUrl = `/${en.string('Permalink', { required: true })}/`;
+    const deUrl = `/de/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/${en.field('Permalink').requiredStringValue()}/`;
 
-    for(let locale of [de, en]) {
+    for(const locale of [de, en]) {
       data[locale === de ? 'de' : 'en'].playvienna.push({
-        downloads: locale.list('Downloads', download(data)),
-        links: locale.list('Links', link),
-        media: locale.list('Media', media(data)),
-        menuPosition: locale.integer('Menu Position', { required: true }),
-        text: locale.field('Text', markdown, { required: true }),
-        textStripped: locale.field('Text', strip, { required: true }),
-        title: locale.string('Title', { required: true }),
+        downloads: locale.list('Downloads').requiredValues(download(data)),
+        links: locale.list('Links').requiredLinkValues(),
+        media: locale.list('Media').requiredValues(media(data)),
+        menuPosition: locale.field('Menu Position').requiredIntegerValue(),
+        text: locale.field('Text').requiredMarkdownValue(),
+        textStripped: locale.field('Text').requiredStrippedValue(),
+        title: locale.field('Title').requiredStringValue(),
         translateUrl: locale === de ? enUrl : deUrl,
         url: locale === de ? deUrl : enUrl
       });

@@ -1,9 +1,12 @@
-const eno = require('enojs');
+const enolib = require('enolib');
 const fastGlob = require('fast-glob');
 const fsExtra = require('fs-extra');
 const path = require('path');
+const { integer } = require('enotype');
 
-const { download, link, markdown, media, strip } = require('../loaders.js');
+const { download, link, markdown, media, stripped } = require('../loaders.js');
+
+enolib.register({ integer, link, markdown, stripped });
 
 module.exports = async data => {
   data.de.games = [];
@@ -13,30 +16,30 @@ module.exports = async data => {
   const files = await fastGlob(directory);
 
   for(let file of files) {
-    const game = eno.parse(
+    const game = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { sourceLabel: file }
+      { source: file }
     );
 
     const de = game.section('DE');
     const en = game.section('EN');
 
-    const deUrl = `/de/spiele/${de.string('Permalink', { required: true })}/`;
-    const enUrl = `/games/${en.string('Permalink', { required: true })}/`;
+    const deUrl = `/de/spiele/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/games/${en.field('Permalink').requiredStringValue()}/`;
 
     for(let locale of [de, en]) {
       data[locale === de ? 'de' : 'en'].games.push({
-        credits: locale.string('Credits', { required: true }),
-        downloads: locale.list('Downloads', download(data)),
-        links: locale.list('Links', link),
-        media: locale.list('Media', media(data)),
-        permalink: locale.string('Permalink', { required: true }),
-        text: locale.field('Text', markdown, { required: true }),
-        textStripped: locale.field('Text', strip, { required: true }),
-        title: locale.string('Title', { required: true }),
+        credits: locale.field('Credits').requiredStringValue(),
+        downloads: locale.list('Downloads').requiredValues(download(data)),
+        links: locale.list('Links').requiredLinkValues(),
+        media: locale.list('Media').requiredValues(media(data)),
+        permalink: locale.field('Permalink').requiredStringValue(),
+        text: locale.field('Text').requiredMarkdownValue(),
+        textStripped: locale.field('Text').requiredStrippedValue(),
+        title: locale.field('Title').requiredStringValue(),
         translateUrl: locale === de ? enUrl : deUrl,
         url: locale === de ? deUrl : enUrl,
-        year: locale.integer('Year', { required: true })
+        year: locale.field('Year').requiredIntegerValue()
       });
     }
 

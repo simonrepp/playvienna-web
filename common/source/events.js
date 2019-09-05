@@ -1,10 +1,13 @@
-const eno = require('enojs');
+const enolib = require('enolib');
+const { date } = require('enotype');
 const fastGlob = require('fast-glob');
 const fsExtra = require('fs-extra');
 const moment = require('moment');
 const path = require('path');
 
-const { download, eventType, link, markdown, media, strip } = require('../loaders.js');
+const { download, eventType, link, markdown, media, stripped } = require('../loaders.js');
+
+enolib.register({ date, eventType, link, markdown, stripped })
 
 module.exports = async data => {
   const today = moment().startOf('day');
@@ -23,53 +26,53 @@ module.exports = async data => {
   const usedUrls = [];
 
   for(let file of files) {
-    const event = eno.parse(
+    const event = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { sourceLabel: file }
+      { source: file }
     );
 
     const de = event.section('DE');
     const en = event.section('EN');
 
-    const deDate = de.date('Date', { required: true });
-    const enDate = en.date('Date', { required: true });
+    const deDate = de.field('Date').requiredDateValue();
+    const enDate = en.field('Date').requiredDateValue();
     const deYear = deDate.getFullYear();
     const enYear = enDate.getFullYear();
 
     const deYearUrl = `/de/${deYear}/`;
     const enYearUrl = `/${enYear}/`;
 
-    const deUrl = `/de/${deDate.getFullYear()}/${de.string('Permalink', { required: true })}/`;
-    const enUrl = `/${enDate.getFullYear()}/${en.string('Permalink', { required: true })}/`;
+    const deUrl = `/de/${deDate.getFullYear()}/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/${enDate.getFullYear()}/${en.field('Permalink').requiredStringValue()}/`;
 
     if(usedUrls.hasOwnProperty(deUrl))
-      throw de.element('Permalink').error(`The german version of the event '${usedUrls[deUrl]}' already uses the permalink '${de.string('Permalink')}' - permalinks must be unique inside each locale (de/en)!`);
+      throw de.field('Permalink').error(`The german version of the event '${usedUrls[deUrl]}' already uses the permalink '${de.field('Permalink').requiredStringValue()}' - permalinks must be unique inside each locale (de/en)!`);
 
     if(usedUrls.hasOwnProperty(enUrl))
-      throw en.element('Permalink').error(`The english version of the event '${usedUrls[enUrl]}' already uses the permalink '${en.string('Permalink')}' - permalinks must be unique inside each locale (de/en)!`);
+      throw en.field('Permalink').error(`The english version of the event '${usedUrls[enUrl]}' already uses the permalink '${en.field('Permalink').requiredStringValue()}' - permalinks must be unique inside each locale (de/en)!`);
 
     usedUrls[deUrl] = file;
     usedUrls[enUrl] = file;
 
     for(let locale of [de, en]) {
       const eventData = {
-        address: locale.string('Address'),
-        city: locale.string('City', { required: true }),
-        country: locale.string('Country', { required: true }),
-        coordinates: locale.latLng('Coordinates'),
-        date: locale.date('Date', { required: true }),
-        downloads: locale.list('Downloads', download(data)),
-        end: locale.date('End'),
-        links: locale.list('Links', link),
-        media: locale.list('Media', media),
-        text: locale.field('Text', markdown, { required: true }),
-        textStripped: locale.field('Text', strip, { required: true }),
-        title: locale.string('Title', { required: true }),
+        address: locale.field('Address').optionalStringValue(),
+        city: locale.field('City').requiredStringValue(),
+        country: locale.field('Country').requiredStringValue(),
+        coordinates: locale.field('Coordinates').optionalLatLngValue(),
+        date: locale.field('Date').requiredDateValue(),
+        downloads: locale.list('Downloads').requiredValues(download(data)),
+        end: locale.field('End').optionalDateValue(),
+        links: locale.list('Links').requiredLinkValues(),
+        media: locale.list('Media').requiredValues(media(data)),
+        text: locale.field('Text').requiredMarkdownValue(),
+        textStripped: locale.field('Text').requiredStrippedValue(),
+        title: locale.field('Title').requiredStringValue(),
         translateUrl: locale === de ? enUrl : deUrl,
-        types: locale.string('Type', eventType, { required: true }),
+        types: locale.field('Type').requiredEventTypeValue(),
         url: locale === de ? deUrl : enUrl,
-        venue: locale.string('Venue'),
-        venueLink: locale.string('Venue Link')
+        venue: locale.field('Venue').optionalStringValue(),
+        venueLink: locale.field('Venue Link').optionalStringValue()
       };
 
       data[locale === de ? 'de' : 'en'].events.push(eventData);

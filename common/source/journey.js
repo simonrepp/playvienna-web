@@ -1,20 +1,22 @@
-const eno = require('enojs');
-const { Fieldset, List } = require('enojs');
+const enolib = require('enolib');
 const fastGlob = require('fast-glob');
 const fsExtra = require('fs-extra');
 const path = require('path');
+const { latLng } = require('enotype');
 
-const { download, link, markdown, media, strip } = require('../loaders.js');
+const { download, link, markdown, media, stripped } = require('../loaders.js');
+
+enolib.register({ latLng, link, markdown, stripped });
 
 module.exports = async data => {
   data.de.journey = { editions: [], website: {} };
   data.en.journey = { editions: [], website: {} };
 
-  const website = eno.parse(await fsExtra.readFile(path.join(data.contentDir, 'journey/website.eno'), 'utf-8'), { locale: 'de', reporter: 'terminal' });
+  const website = enolib.parse(await fsExtra.readFile(path.join(data.contentDir, 'journey/website.eno'), 'utf-8'));
 
   for(let locale of [website.section('DE'), website.section('EN')]) {
-    for(let block of locale.elements()) {
-      data[locale.name.toLowerCase()].journey.website[block.name] = block.value(markdown);
+    for(let block of locale.fields()) {
+      data[locale.stringKey().toLowerCase()].journey.website[block.stringKey()] = block.requiredMarkdownValue();
     }
   }
 
@@ -22,13 +24,13 @@ module.exports = async data => {
   const files = await fastGlob(directory);
 
   for(let file of files) {
-    const edition = eno.parse(
+    const edition = enolib.parse(
       await fsExtra.readFile(file, 'utf-8'),
-      { sourceLabel: file }
+      { source: file }
     );
 
-    const deUrl = `/de/journey/${edition.string('Permalink', { required: true })}/`;
-    const enUrl = `/journey/${edition.string('Permalink', { required: true })}/`;
+    const deUrl = `/de/journey/${edition.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/journey/${edition.field('Permalink').requiredStringValue()}/`;
 
     for(let locale of ['de', 'en']) {
       let checkpointNumber = 0;
@@ -36,49 +38,52 @@ module.exports = async data => {
       // TODO: (-ish): No possibilty for locale specific download/link/media/labels for journeys because of unique layout
 
       data[locale].journey.editions.push({
-        abstract: edition.string('Abstract', { required: true }),
-        date: edition.date('Date', { required: true }),
-        downloads: edition.list('Downloads', download(data)),
-        length: edition.string('Length', { enforceElement: true }),
-        links: edition.list('Links', link),
-        media: edition.list('Media', media(data)),
-        route: edition.section('Route').elements().map(checkpoint => ({
-          coordinates: checkpoint.latLng('Coordinates'),
-          hint: checkpoint.string(`Hint/${locale.toUpperCase()}`) || checkpoint.string('Hint'),
-          location: checkpoint.string('Location', { required: true }),
+        abstract: edition.field('Abstract').requiredStringValue(),
+        date: edition.field('Date').requiredDateValue(),
+        downloads: edition.list('Downloads').requiredValues(download(data)),
+        length: edition.requiredField('Length').optionalStringValue(),
+        links: edition.list('Links').requiredLinkValues(),
+        media: edition.list('Media').requiredValues(media(data)),
+        route: edition.section('Route').sections().map(checkpoint => ({
+          coordinates: checkpoint.field('Coordinates').optionalLatLngValue(),
+          hint: checkpoint.field(`Hint/${locale.toUpperCase()}`).optionalStringValue() || checkpoint.field('Hint').optionalStringValue(),
+          location: checkpoint.field('Location').requiredStringValue(),
           number: (() => {
-            if(checkpoint.name === 'Checkpoint') {
+            if(checkpoint.stringKey() === 'Checkpoint') {
               checkpointNumber++;
               return checkpointNumber.toString();
-            } else if(checkpoint.name === 'Checkpoint Alternative A') {
+            } else if(checkpoint.stringKey() === 'Checkpoint Alternative A') {
               checkpointNumber++;
               return `${checkpointNumber}a`;
-            } else if(checkpoint.name === 'Checkpoint Alternative B') {
+            } else if(checkpoint.stringKey() === 'Checkpoint Alternative B') {
               return `${checkpointNumber}b`;
             } else {
               return null;
             }
           })(),
           safezone: (() => {
-            const safezone = checkpoint.element('Safezone', { required: false });
+            const safezone = checkpoint.optionalElement('Safezone');
 
-            if(safezone instanceof Fieldset) {
+            if(safezone === null)
+              return null;
+
+            if(safezone.yieldsFieldset()) {
               return {
-                center: safezone.latLng('Center', { required: true }),
-                radius: safezone.integer('Radius', { required: true }),
+                center: safezone.toFieldset().entry('Center').requiredLatLngValue(),
+                radius: safezone.toFieldset().entry('Radius').requiredIntegerValue(),
                 shape: 'circle'
               };
-            } else if(safezone instanceof List) {
+            } else if(safezone.yieldsList()) {
               return {
-                path: safezone.latLngItems(),
+                path: safezone.toList().requiredLatLngValues(),
                 shape: 'polygon'
               };
             } else {
-              return null;
+              throw safezone.error('Safezones must either be specified as a fieldset or a list.');
             }
           })(),
           special: (() => {
-            switch(checkpoint.name) {
+            switch(checkpoint.stringKey()) {
               case 'Checkpoint': return null;
               case 'Checkpoint Alternative A': return 'alternativeA';
               case 'Checkpoint Alternative B': return 'alternativeB';
@@ -87,12 +92,12 @@ module.exports = async data => {
             }
           })()
         })),
-        text: edition.field(`Text/${locale.toUpperCase()}`, markdown) ||
-              edition.field('Text', markdown),
-        textStripped: edition.field(`Text/${locale.toUpperCase()}`, strip) ||
-                      edition.field('Text', strip),
-        time: edition.string('Time', { required: true }),
-        title: edition.string('Title', { required: true }),
+        text: edition.field(`Text/${locale.toUpperCase()}`).optionalMarkdownValue() ||
+              edition.field('Text').optionalMarkdownValue(),
+        textStripped: edition.field(`Text/${locale.toUpperCase()}`).optionalStrippedValue() ||
+                      edition.field('Text').optionalStrippedValue(),
+        time: edition.field('Time').requiredStringValue(),
+        title: edition.field('Title').requiredStringValue(),
         translateUrl: locale === 'de' ? enUrl : deUrl,
         url: locale === 'de' ? deUrl : enUrl
       });
