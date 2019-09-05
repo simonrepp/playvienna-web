@@ -39,5 +39,5 @@
     "playvienna-scripts": "parcel build playvienna.com/scripts/main.js --experimental-scope-hoisting --no-cache --no-source-maps --out-dir playvienna.com/static --out-file scripts.js",
     "playvienna-styles": "node-sass --output-style compressed playvienna.com/styles/main.scss playvienna.com/static/styles.css"
   },
-  "version": "0.2.1"
+  "version": "0.3.0"
 }
