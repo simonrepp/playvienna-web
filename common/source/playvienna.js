@@ -24,8 +24,8 @@ module.exports = async data => {
     const de = page.section('DE');
     const en = page.section('EN');
 
-    const deUrl = `/de/${de.field('Permalink').requiredStringValue()}/`;
-    const enUrl = `/${en.field('Permalink').requiredStringValue()}/`;
+    const deUrl = `/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/en/${en.field('Permalink').requiredStringValue()}/`;
 
     for(const locale of [de, en]) {
       data[locale === de ? 'de' : 'en'].playvienna.push({

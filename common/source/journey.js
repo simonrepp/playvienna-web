@@ -29,8 +29,8 @@ module.exports = async data => {
       { source: file }
     );
 
-    const deUrl = `/de/journey/${edition.field('Permalink').requiredStringValue()}/`;
-    const enUrl = `/journey/${edition.field('Permalink').requiredStringValue()}/`;
+    const deUrl = `/journey/${edition.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/en/journey/${edition.field('Permalink').requiredStringValue()}/`;
 
     for(const locale of ['de', 'en']) {
       let checkpointNumber = 0;

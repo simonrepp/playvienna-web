@@ -24,7 +24,7 @@ const teaserBubble = (className, events, heading) => {
 };
 
 exports.handleLoad = () => {
-  if(!location.pathname.match(/^(\/|\/de\/)$/))
+  if(!location.pathname.match(/^(\/|\/en\/)$/))
     return false;
 
   const container = document.querySelector('.upcoming__container');

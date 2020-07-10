@@ -2,16 +2,16 @@ const translate = require('../../lib/translate.js');
 
 const SECTION_URLS = {
   de: {
-    'Events': '/de/veranstaltungen/',
-    'Games': '/de/spiele/',
-    'Journey': '/de/journey/',
-    'play:vienna': '/de/playvienna/'
-  },
-  en: {
-    'Events': '/events/',
-    'Games': '/games/',
+    'Events': '/veranstaltungen/',
+    'Games': '/spiele/',
     'Journey': '/journey/',
     'play:vienna': '/playvienna/'
+  },
+  en: {
+    'Events': '/en/events/',
+    'Games': '/en/games/',
+    'Journey': '/en/journey/',
+    'play:vienna': '/en/playvienna/'
   }
 };
 

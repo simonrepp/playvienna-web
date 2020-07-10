@@ -16,7 +16,7 @@ exports.handleSubmit = event => {
 
   if('search' in form.dataset) {
     const query = form.query.value;
-    const url = `${form.dataset.locale === 'de' ? '/de/suche/?begriff' : '/search/?query'}=${encodeURI(query)}`;
+    const url = `${form.dataset.locale === 'de' ? '/suche/?begriff' : '/en/search/?query'}=${encodeURI(query)}`;
 
     event.preventDefault();
     Turbolinks.visit(url);
@@ -28,7 +28,7 @@ exports.handleSubmit = event => {
 };
 
 exports.handleLoad = () => {
-  if(!location.pathname.match(/^(\/de\/suche\/|\/search\/)/))
+  if(!location.pathname.match(/^(\/suche\/|\/en\/search\/)/))
     return false;
 
   const contextJSON = document.querySelector('.search__context').innerText;
@@ -41,7 +41,7 @@ exports.handleLoad = () => {
   }
 
   for(const link of document.querySelectorAll('[data-translate-link]')) {
-    link.href = context.locale === 'de' ? `/search/?query=${query}` : `/de/suche/?begriff=${query}`;
+    link.href = context.locale === 'de' ? `/en/search/?query=${query}` : `/suche/?begriff=${query}`;
   }
 
   let notification = null;

@@ -25,8 +25,7 @@ module.exports = async data => {
 
     const image = sharp(file);
 
-    const operation = image.resize(2560)
-                           .withoutEnlargement()
+    const operation = image.resize({ width: 2560, withoutEnlargement: true })
                            .grayscale()
                            .toColorspace('b-w')
                            .toFile(path.join(data.buildDir, background.url));

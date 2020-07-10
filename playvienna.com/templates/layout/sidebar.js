@@ -3,20 +3,20 @@ const translate = require('../../lib/translate.js');
 // TODO: Deduplicate? (Almost identical construct in header.js)
 const SECTION_URLS = {
   de: {
-    'Events': '/de/veranstaltungen/',
-    'Games': '/de/spiele/',
-    'Home': '/de/',
-    'Imprint': '/de/kontakt/',
-    'Journey': '/de/journey/',
-    'play:vienna': '/de/playvienna/'
-  },
-  en: {
-    'Events': '/events/',
-    'Games': '/games/',
+    'Events': '/veranstaltungen/',
+    'Games': '/spiele/',
     'Home': '/',
-    'Imprint': '/contact/',
+    'Imprint': '/kontakt/',
     'Journey': '/journey/',
     'play:vienna': '/playvienna/'
+  },
+  en: {
+    'Events': '/en/events/',
+    'Games': '/en/games/',
+    'Home': '/en/',
+    'Imprint': '/en/contact/',
+    'Journey': '/en/journey/',
+    'play:vienna': '/en/playvienna/'
   }
 };
 

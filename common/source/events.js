@@ -39,11 +39,11 @@ module.exports = async data => {
     const deYear = deDate.getFullYear();
     const enYear = enDate.getFullYear();
 
-    const deYearUrl = `/de/${deYear}/`;
-    const enYearUrl = `/${enYear}/`;
+    const deYearUrl = `/${deYear}/`;
+    const enYearUrl = `/en/${enYear}/`;
 
-    const deUrl = `/de/${deDate.getFullYear()}/${de.field('Permalink').requiredStringValue()}/`;
-    const enUrl = `/${enDate.getFullYear()}/${en.field('Permalink').requiredStringValue()}/`;
+    const deUrl = `/${deDate.getFullYear()}/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/en/${enDate.getFullYear()}/${en.field('Permalink').requiredStringValue()}/`;
 
     if(usedUrls.hasOwnProperty(deUrl))
       throw de.field('Permalink').error(`The german version of the event '${usedUrls[deUrl]}' already uses the permalink '${de.field('Permalink').requiredStringValue()}' - permalinks must be unique inside each locale (de/en)!`);

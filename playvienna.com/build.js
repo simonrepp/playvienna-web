@@ -30,8 +30,8 @@ module.exports = async context => {
     const localeContext = {
       baseUrl: 'http://playvienna.com',
       data: data[locale],
-      imprintUrl: locale === 'de' ? '/de/kontakt/' : '/contact/',
-      indexUrl: locale === 'de' ? '/de/' : '/',
+      imprintUrl: locale === 'de' ? '/kontakt/' : '/en/contact/',
+      indexUrl: locale === 'de' ? '/' : '/en/',
       locale: locale
     };
 
@@ -41,8 +41,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'index',
-      translateUrl: locale === 'de' ? '/' : '/de/',
-      url: locale === 'de' ? '/de/' : '/'
+      translateUrl: locale === 'de' ? '/en/' : '/',
+      url: locale === 'de' ? '/' : '/en/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -52,8 +52,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'site-not-found',
-      translateUrl: locale === 'de' ? '/site-not-found/' : '/de/seite-nicht-gefunden/',
-      url: locale === 'de' ? '/de/seite-nicht-gefunden/' : '/site-not-found/'
+      translateUrl: locale === 'de' ? '/en/site-not-found/' : '/seite-nicht-gefunden/',
+      url: locale === 'de' ? '/seite-nicht-gefunden/' : '/en/site-not-found/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -63,8 +63,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'search',
-      translateUrl: locale === 'de' ? '/search/' : '/de/suche/',
-      url: locale === 'de' ? '/de/suche/' : '/search/'
+      translateUrl: locale === 'de' ? '/en/search/' : '/suche/',
+      url: locale === 'de' ? '/suche/' : '/en/search/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -74,8 +74,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'playvienna',
-      translateUrl: locale === 'de' ? '/playvienna/' : '/de/playvienna/',
-      url: locale === 'de' ? '/de/playvienna/' : '/playvienna/'
+      translateUrl: locale === 'de' ? '/en/playvienna/' : '/playvienna/',
+      url: locale === 'de' ? '/playvienna/' : '/en/playvienna/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -97,8 +97,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'games',
-      translateUrl: locale === 'de' ? '/games/' : '/de/spiele/',
-      url: locale === 'de' ? '/de/spiele/' : '/games/'
+      translateUrl: locale === 'de' ? '/en/games/' : '/spiele/',
+      url: locale === 'de' ? '/spiele/' : '/en/games/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -120,8 +120,8 @@ module.exports = async context => {
 
     context = Object.assign({}, localeContext, {
       section: 'events',
-      translateUrl: locale === 'de' ? '/events/' : '/de/veranstaltungen/',
-      url: locale === 'de' ? '/de/veranstaltungen/' : '/events/'
+      translateUrl: locale === 'de' ? '/en/events/' : '/veranstaltungen/',
+      url: locale === 'de' ? '/veranstaltungen/' : '/en/events/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));
@@ -155,8 +155,8 @@ module.exports = async context => {
     // journey
     context = Object.assign({}, localeContext, {
       section: 'journey',
-      translateUrl: locale === 'de' ? '/journey/' : '/de/journey/',
-      url: locale === 'de' ? '/de/journey/' : '/journey/'
+      translateUrl: locale === 'de' ? '/en/journey/' : '/journey/',
+      url: locale === 'de' ? '/journey/' : '/en/journey/'
     });
 
     await fsExtra.ensureDir(path.join(buildDir, context.url));

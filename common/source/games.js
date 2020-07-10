@@ -24,8 +24,8 @@ module.exports = async data => {
     const de = game.section('DE');
     const en = game.section('EN');
 
-    const deUrl = `/de/spiele/${de.field('Permalink').requiredStringValue()}/`;
-    const enUrl = `/games/${en.field('Permalink').requiredStringValue()}/`;
+    const deUrl = `/spiele/${de.field('Permalink').requiredStringValue()}/`;
+    const enUrl = `/en/games/${en.field('Permalink').requiredStringValue()}/`;
 
     for(const locale of [de, en]) {
       data[locale === de ? 'de' : 'en'].games.push({
