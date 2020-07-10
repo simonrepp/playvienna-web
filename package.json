@@ -1,22 +1,22 @@
 {
   "author": "Simon Repp <simon@fdpl.io> (https://simonrepp.com)",
   "dependencies": {
-    "atom-package-deps": "^5.1.0",
-    "enolib": "^0.8.0",
+    "atom-package-deps": "^6.0.0",
+    "enolib": "^0.8.2",
     "enotype": "^0.3.0",
     "express": "^4.17.1",
-    "fast-glob": "^3.0.4",
-    "fs-extra": "^8.1.0",
-    "markdown-it": "^9.1.0",
-    "moment": "^2.24.0",
+    "fast-glob": "^3.2.4",
+    "fs-extra": "^9.0.1",
+    "markdown-it": "^11.0.0",
+    "moment": "^2.27.0",
     "moment-range": "^4.0.2",
-    "sharp": "^0.20.8",
+    "sharp": "^0.25.4",
     "striptags": "^3.1.1"
   },
   "description": "Static site generators for journeyvienna.at and playvienna.com",
   "devDependencies": {
-    "node-sass": "^4.12.0",
-    "parcel-bundler": "^1.12.3",
+    "node-sass": "^4.14.1",
+    "parcel-bundler": "^1.12.4",
     "turbolinks": "^5.2.0"
   },
   "engines": {
